@@ -1,16 +1,14 @@
 import * as cdk from 'aws-cdk-lib';
+import { IpAddresses, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class MyVpcStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'MyVpcQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new Vpc(this, 'SampleVpc', {
+      ipAddresses: IpAddresses.cidr('10.0.0.0/16'),
+      vpcName: 'cdk-sample-vpc'
+    });
   }
 }
