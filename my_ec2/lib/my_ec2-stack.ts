@@ -39,8 +39,8 @@ export class MyEc2Stack extends cdk.Stack {
       // システムアップデート
       'dnf update -y',
 
-      // Amazon Corretto 21 (OpenJDK)をインストール
-      'dnf install -y java-21-amazon-corretto java-21-amazon-corretto-devel',
+      // Amazon Corretto 21 (OpenJDK)とDockerをインストール
+      'dnf install -y java-21-amazon-corretto java-21-amazon-corretto-devel docker',
 
       // JAVA_HOME環境変数の設定
       'echo "export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto" >> /etc/environment',
@@ -49,6 +49,14 @@ export class MyEc2Stack extends cdk.Stack {
       // 現在のセッション用にも環境変数を設定
       'export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto',
       'export PATH=$JAVA_HOME/bin:$PATH',
+
+      // Dockerの環境設定
+      // Dockerグループにec2-userを所属させる
+      'usermod -aG docker ec2-user',
+      // Dockerコマンドを実行できるようにする
+      'chmod 666 /var/run/docker.sock',
+      'systemctl enable docker',
+      'systemctl start docker',
     );
 
     // EC2インスタンスの作成
